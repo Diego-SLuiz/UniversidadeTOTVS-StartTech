@@ -17,7 +17,7 @@ public class CalcularVolumePiscina {
         Double profundidadeFinal = entrada.nextDouble();
 
         System.out.printf("As dimensões da piscina são %.1f x %.1f | profundidade %.1f a %.1f\n", altura, largura, profundidadeInicial, profundidadeFinal);
-        System.out.printf("Essa piscina comporta %.1f litros", altura * largura * (profundidadeFinal - profundidadeInicial) * 1000);
+        System.out.printf("Essa piscina comporta %.1f litros", altura * largura * ((profundidadeFinal + profundidadeInicial) / 2) * 1000);
     }
 
 }
