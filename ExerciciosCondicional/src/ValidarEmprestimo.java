@@ -8,6 +8,9 @@ public class ValidarEmprestimo {
         StringBuilder mensagemRejeitado = new StringBuilder();
         Boolean rejeitado = false;
 
+        Double valorParcela = valorEmprestimo / quantidadeParcelas;
+        Double porcentagemSalario = valorParcela / valorSalario * 100;
+
         if (idade < 18 || idade > 65) {
             mensagemRejeitado.append(String.format("- idade precisa ser entre 18 e 65 anos. Idade informada: %d\n", idade));
             rejeitado = true;
@@ -18,14 +21,20 @@ public class ValidarEmprestimo {
             rejeitado = true;
         }
 
-        if (valorEmprestimo / quantidadeParcelas > 0.3 * valorSalario) {
-            mensagemRejeitado.append(String.format("- parcela compromete mais de 30 porcento do salário. Salário: %.1f", valorSalario));
+        if (porcentagemSalario > 30) {
+            mensagemRejeitado.append(String.format("- parcela compromete %.0f porcento do salário. Salário: %.1f, parcela: %.1f", porcentagemSalario, valorSalario, valorParcela));
             rejeitado = true;
         }
+
+        System.out.printf("A pessoa que está solicitando o emprestimo tem %d anos e tem o salario de %.1fR$\n", idade, valorSalario);
+        System.out.printf("O emprestimo solicitado é de %.1fR$, para ser pago em %d parcelas\n", valorEmprestimo, quantidadeParcelas);
 
         if (rejeitado) {
             System.out.println("O emprestimo foi rejeitado: ");
             System.out.println(mensagemRejeitado);
+            return;
         }
+
+        System.out.println("O emprestimo foi aprovado!");
     }
 }
