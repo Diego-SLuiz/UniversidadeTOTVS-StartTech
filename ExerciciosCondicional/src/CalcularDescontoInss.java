@@ -2,33 +2,45 @@ public class CalcularDescontoInss {
     public static void main(String[] args) {
         //Double[] listaAliquotas = {0.075, 0.09, 0.12, 0.14};
         //Double[] listaSalarios = {1212.0, 2427.35, 3641.03, 7087.22};
+
         Double valorSalario = Double.parseDouble(args[0]);
-        Double valorRestante = valorSalario;
+        Double valorRestante = 0.0;
         Double valorDesconto = 0.0;
+        Double valorAliquota = 0.0;
+
+        if (valorSalario < 1212) {
+            valorDesconto += valorSalario * 0.075;
+            valorRestante = 0.0;
+            valorAliquota = 0.0;
+        }
 
         if (valorSalario >= 1212) {
-            valorRestante -= 1212;
-            valorDesconto += valorRestante * 0.075;
+            valorDesconto += 1212 * 0.075;
+            valorRestante = valorSalario - 1212;
+            valorAliquota = 0.09;
         }
 
         if (valorSalario >= 2427.35) {
-            valorRestante -= 2427.35;
-            valorDesconto += valorRestante * 0.09;
+            valorDesconto += (2427.35 - 1212) * 0.09;
+            valorRestante = valorSalario - 2427.35;
+            valorAliquota = 0.12;
         }
 
         if (valorSalario >= 3641.03) {
-            valorRestante -= 3641.03;
-            valorDesconto += valorRestante * 0.12;
+            valorDesconto += (3641.03 - 2427.35) * 0.12;
+            valorRestante = valorSalario - 3641.03;
+            valorAliquota = 0.14;
         }
 
         if (valorSalario >= 7087.22) {
-            valorRestante -= 7087.22;
-            valorDesconto += valorRestante * 0.14;
+            valorDesconto += (7087.22 - 3641.03) * 0.14;
+            valorRestante = 0.0;
+            valorAliquota = 0.0;
         }
 
-
-
-        
-        System.out.println(valorDesconto);
+        valorDesconto += valorRestante * valorAliquota;
+        System.out.printf("O salário bruto informado foi de %.2f\n", valorSalario);
+        System.out.printf("O desconto do INSS é de %.2f\n", valorDesconto);
     }
+
 }
