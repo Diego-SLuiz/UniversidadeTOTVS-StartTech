@@ -19,14 +19,17 @@ public class SortearDado {
 
         System.out.printf("O número informado foi %d\n", numeroPedido);
 
-        while (numeroSorteado != numeroPedido) {
+        while (true) {
             numeroSorteado = aleatorio.nextInt(6) + 1;
             tentativa++;
-            System.out.printf("Foi sorteado o número %d\n", numeroSorteado);
-        }
 
-        System.out.printf("Foi sorteado o número %d\n", numeroSorteado);
-        System.out.printf("Foram necessários %d sorteios para que o número %d fosse sorteado\n", tentativa, numeroSorteado);
+            System.out.printf("Foi sorteado o número %d\n", numeroSorteado);
+
+            if (numeroSorteado == numeroPedido) {
+                System.out.printf("Foram necessários %d sorteios para que o número %d fosse sorteado\n", tentativa, numeroSorteado);
+                break;
+            }
+        }
     }
 
 }
