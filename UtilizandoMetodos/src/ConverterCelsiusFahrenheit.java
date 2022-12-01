@@ -8,7 +8,7 @@ public class ConverterCelsiusFahrenheit {
         Double valorTemperatura = perguntarValorTemperatura();
         Double valorConvertido;
 
-        if (tipoTemperatura.equals("F")) {
+        if (tipoTemperatura.equalsIgnoreCase("F")) {
             valorConvertido = converterParaCelsius(valorTemperatura);
             System.out.printf("A temperatura %.2f°F equivale à %.2f°C\n", valorTemperatura, valorConvertido);
         } else {
@@ -23,7 +23,7 @@ public class ConverterCelsiusFahrenheit {
 
         if (!(tipoTemperaturaInformada.equalsIgnoreCase("F") || tipoTemperaturaInformada.equalsIgnoreCase("C"))) {
             System.out.printf("Foi informado um tipo de temperatura inválida: %s\n", tipoTemperaturaInformada);
-            perguntarValorTemperatura();
+            perguntarTipoTemperatura();
         }
 
         return tipoTemperaturaInformada;
@@ -32,11 +32,13 @@ public class ConverterCelsiusFahrenheit {
     public static Double perguntarValorTemperatura() {
         System.out.print("Digite um valor para a temperatura: ");
         Double valorTemperaturaInformado = 0.0;
+        String textoTemperaturaInformado = "";
 
         try {
-            valorTemperaturaInformado = Double.parseDouble(entrada.nextLine());
-        } catch (Exception error) {
-            System.out.printf("Foi informado um valor inválido: %s\n", valorTemperaturaInformado);
+            textoTemperaturaInformado = entrada.nextLine();
+            valorTemperaturaInformado = Double.parseDouble(textoTemperaturaInformado.replace(",", "."));
+        } catch (NumberFormatException error) {
+            System.out.printf("Foi informado um valor inválido: %s\n", textoTemperaturaInformado);
             perguntarValorTemperatura();
         }
 
