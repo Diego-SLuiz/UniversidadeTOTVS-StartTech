@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class ConverterCelsiusFahrenheit {
-    private static Scanner entrada = new Scanner(System.in);
+    private static final Scanner entrada = new Scanner(System.in);
 
     public static void main(String[] args) {
         String tipoTemperatura = perguntarTipoTemperatura();
@@ -18,28 +18,38 @@ public class ConverterCelsiusFahrenheit {
     }
 
     public static String perguntarTipoTemperatura() {
-        System.out.print("Digite um tipo de temperatura (F - Fahrenheit | C - Celsius): ");
-        String tipoTemperaturaInformada = entrada.nextLine();
+        String tipoTemperaturaInformada = "";
+        Boolean informacaoInvalida = true;
 
-        if (!(tipoTemperaturaInformada.equalsIgnoreCase("F") || tipoTemperaturaInformada.equalsIgnoreCase("C"))) {
-            System.out.printf("Foi informado um tipo de temperatura inválida: %s\n", tipoTemperaturaInformada);
-            perguntarTipoTemperatura();
+        while (informacaoInvalida) {
+            System.out.print("Digite um tipo de temperatura (F - Fahrenheit | C - Celsius): ");
+            tipoTemperaturaInformada = entrada.nextLine();
+
+            if (!(tipoTemperaturaInformada.equalsIgnoreCase("F") || tipoTemperaturaInformada.equalsIgnoreCase("C"))) {
+                System.out.printf("Foi informado um tipo de temperatura inválida: %s\n", tipoTemperaturaInformada);
+            } else {
+                informacaoInvalida = false;
+            }
         }
 
         return tipoTemperaturaInformada;
     }
 
     public static Double perguntarValorTemperatura() {
-        System.out.print("Digite um valor para a temperatura: ");
         Double valorTemperaturaInformado = 0.0;
         String textoTemperaturaInformado = "";
+        Boolean valorInvalido = true;
 
-        try {
-            textoTemperaturaInformado = entrada.nextLine();
-            valorTemperaturaInformado = Double.parseDouble(textoTemperaturaInformado.replace(",", "."));
-        } catch (NumberFormatException error) {
-            System.out.printf("Foi informado um valor inválido: %s\n", textoTemperaturaInformado);
-            perguntarValorTemperatura();
+        while (valorInvalido) {
+            System.out.print("Digite um valor para a temperatura: ");
+
+            try {
+                textoTemperaturaInformado = entrada.nextLine();
+                valorTemperaturaInformado = Double.parseDouble(textoTemperaturaInformado.replace(",", "."));
+                valorInvalido = false;
+            } catch (NumberFormatException error) {
+                System.out.printf("Foi informado um valor inválido: %s\n", textoTemperaturaInformado);
+            }
         }
 
         return valorTemperaturaInformado;
