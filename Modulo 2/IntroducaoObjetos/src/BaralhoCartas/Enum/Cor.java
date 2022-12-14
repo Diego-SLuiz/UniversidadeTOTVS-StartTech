@@ -1,6 +1,6 @@
 package BaralhoCartas.Enum;
 
 public enum Cor {
-    PRETA,
-    VERMELHA
+    PRETO,
+    VERMELHO
 }
