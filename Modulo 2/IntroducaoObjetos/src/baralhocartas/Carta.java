@@ -1,7 +1,7 @@
-package BaralhoCartas;
+package baralhocartas;
 
-import BaralhoCartas.Enum.Cor;
-import BaralhoCartas.Enum.Naipe;
+import baralhocartas.enumeration.Cor;
+import baralhocartas.enumeration.Naipe;
 
 public class Carta {
     public String nome;

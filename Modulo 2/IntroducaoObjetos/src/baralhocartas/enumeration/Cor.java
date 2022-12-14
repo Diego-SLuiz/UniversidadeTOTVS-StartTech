@@ -1,4 +1,4 @@
-package BaralhoCartas.Enum;
+package baralhocartas.enumeration;
 
 public enum Cor {
     PRETO,

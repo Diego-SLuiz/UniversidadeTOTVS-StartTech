@@ -1,6 +1,6 @@
-package VolumePiscina;
+package volumepiscina;
 
-import Utilidades.Leitor;
+import utilidades.Leitor;
 
 public class Main {
     public static void main(String[] args) {

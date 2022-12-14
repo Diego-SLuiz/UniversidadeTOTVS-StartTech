@@ -1,6 +1,6 @@
-package BaralhoCartas;
+package baralhocartas;
 
-import BaralhoCartas.Enum.Cor;
+import baralhocartas.enumeration.Cor;
 public class Main {
     public static void main(String[] args) {
         Baralho baralho = new Baralho(Cor.PRETO);

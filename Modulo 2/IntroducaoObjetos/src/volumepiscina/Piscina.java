@@ -1,4 +1,4 @@
-package VolumePiscina;
+package volumepiscina;
 
 public class Piscina {
     public Integer largura;

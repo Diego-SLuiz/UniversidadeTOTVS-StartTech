@@ -1,11 +1,8 @@
-package BaralhoCartas;
+package baralhocartas;
 
-import BaralhoCartas.Enum.Cor;
-import BaralhoCartas.Enum.Naipe;
+import baralhocartas.enumeration.Cor;
+import baralhocartas.enumeration.Naipe;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Baralho {

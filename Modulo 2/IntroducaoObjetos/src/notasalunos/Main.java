@@ -1,6 +1,6 @@
-package NotasAlunos;
+package notasalunos;
 
-import Utilidades.Leitor;
+import utilidades.Leitor;
 
 public class Main {
     public static void main(String[] args) {
