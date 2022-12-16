@@ -51,12 +51,9 @@ public class Baralho {
         Carta[] cartasSaque = new Carta[quantidade];
 
         for (int i = 0; i < quantidade; i++) {
-            if (posicao >= cartas.length) {
-                cartasSaque[i] = null;
-            } else {
+            if (posicao < cartas.length) {
                 cartasSaque[i] = cartas[posicao];
             }
-
             posicao++;
         }
 
