@@ -7,7 +7,7 @@ public class Main {
         baralho.embaralhar();
 
         System.out.println("Baralho pronto!");
-        for (Carta carta : baralho.sacar(1)) {
+        for (Carta carta : baralho.sacar(52)) {
             System.out.printf("A carta sacada é: \n%s\n", carta);
         }
     }

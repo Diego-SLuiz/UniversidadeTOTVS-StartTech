@@ -2,11 +2,11 @@ package baralhocartas;
 
 import baralhocartas.enumeration.Cor;
 import baralhocartas.enumeration.Naipe;
+import baralhocartas.enumeration.Nome;
 
 import java.util.Random;
 
 public class Baralho {
-    private static final String[] nomesCarta = {"Ás", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valete", "Dama", "Rei"};
     private static final Integer quantidadeGrupos = 4;
     private static final Integer cartasPorGrupo = 13;
     private Integer posicao;
@@ -23,11 +23,11 @@ public class Baralho {
     private void construirBaralho() {
         for (int i = 0; i < quantidadeGrupos; i++) {
             for (int j = 0; j < cartasPorGrupo; j++) {
-                Naipe naipe = Naipe.values()[i];
-                String nome = nomesCarta[j];
                 Integer valor = j + 1;
+                Naipe naipe = Naipe.values()[i];
+                Nome nome = Nome.values()[j];
 
-                Carta carta = new Carta(nome, valor, naipe, cor);
+                Carta carta = new Carta(valor, nome, naipe, cor);
                 cartas[i * cartasPorGrupo + j] = carta;
             }
         }
@@ -53,8 +53,8 @@ public class Baralho {
         for (int i = 0; i < quantidade; i++) {
             if (posicao < cartas.length) {
                 cartasSaque[i] = cartas[posicao];
+                posicao++;
             }
-            posicao++;
         }
 
         return cartasSaque;

@@ -2,16 +2,17 @@ package baralhocartas;
 
 import baralhocartas.enumeration.Cor;
 import baralhocartas.enumeration.Naipe;
+import baralhocartas.enumeration.Nome;
 
 public class Carta {
-    public String nome;
     public Integer valor;
+    public Nome nome;
     public Cor cor;
     public Naipe naipe;
 
-    public Carta(String nome, Integer valor, Naipe naipe, Cor cor) {
-        this.nome = nome;
+    public Carta(Integer valor, Nome nome, Naipe naipe, Cor cor) {
         this.valor = valor;
+        this.nome = nome;
         this.cor = cor;
         this.naipe = naipe;
     }
@@ -20,4 +21,5 @@ public class Carta {
     public String toString() {
         return String.format("Carta - Nome: %s Valor: %d Naipe: %s Cor: %s", nome, valor, naipe, cor);
     }
+
 }
