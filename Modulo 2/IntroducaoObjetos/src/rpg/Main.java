@@ -1,49 +1,48 @@
 package rpg;
 
-import rpg.enumeration.CategoriaArmamento;
-import rpg.enumeration.CategoriaEquipamento;
-import rpg.enumeration.EspeciePersonagem;
+import rpg.armamento.EspadaBasica;
+import rpg.armamento.MachadoBasico;
+import rpg.equipamento.ArmaduraCotaDeMalha;
+import rpg.personagem.Humano;
+import rpg.personagem.Orc;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        // Criação do humano e seus equipamentos
-        Personagem humano = new Personagem("Aventureiro",10,20,0,10,EspeciePersonagem.HUMANO);
-        Armamento espadaBasica = new Armamento("Espada Básica", 2,8,CategoriaArmamento.ESPADA);
-        Equipamento armaduraCotaDeMalha = new Equipamento("Armadura Cota De Malha", 4, CategoriaEquipamento.ARMADURA);
+    public static void main(String[] args){
+        Humano humano = new Humano("Aventureiro");
+        EspadaBasica espada = new EspadaBasica();
+        ArmaduraCotaDeMalha armadura = new ArmaduraCotaDeMalha();
 
-        humano.usarArmamento(espadaBasica);
-        humano.usarEquipamento(armaduraCotaDeMalha);
-        System.out.println(humano);
+        humano.usarArmamento(espada);
+        humano.usarEquipamento(armadura);
 
-        // Criação do orc e seus equipamentos
-        Personagem orc = new Personagem("Orc Selvagem", 8, 20, 0, 10, EspeciePersonagem.ORC);
-        Armamento machadoBasico = new Armamento("Machado Básico", 0, 12, CategoriaArmamento.MACHADO);
+        Orc orc = new Orc("Orc Selvagem");
+        MachadoBasico machado = new MachadoBasico();
 
-        orc.usarArmamento(machadoBasico);
-        System.out.println(orc);
+        orc.usarArmamento(machado);
 
-        // Sistema de batalha
-        String mensagemVitoria = "%s é o vencedor da batalha!!!";
-        
+        Integer contadorTurnos = 1;
+
         while(true) {
-            if (humano.estaVivo) {
-                humano.inferirAtaque(orc);
-                Thread.sleep(5000);
-                System.out.println();
-            } else {
-                System.out.println(mensagemVitoria.formatted(orc.nome));
+            System.out.printf("\nRodada %d\n", contadorTurnos);
+            contadorTurnos++;
+
+            humano.atacar(orc);
+            if (!orc.estaVivo()) {
+                System.out.printf("\n%s morreu!\n", orc.getNome());
+                System.out.printf("%s venceu!\n\n", humano.getNome());
                 break;
             }
-
-            if (orc.estaVivo) {
-                orc.inferirAtaque(humano);
-                Thread.sleep(5000);
-                System.out.println();
-            } else {
-                System.out.println(mensagemVitoria.formatted(humano.nome));
+            
+            orc.atacar(humano);
+            if (!humano.estaVivo()) {
+                System.out.printf("\n%s morreu!\n", humano.getNome());
+                System.out.printf("%s venceu!\n\n", orc.getNome());
                 break;
             }
         }
+
+        System.out.print(humano);
+        System.out.print(orc);
     }
 
 }

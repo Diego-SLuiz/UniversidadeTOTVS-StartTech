@@ -1,10 +1,12 @@
-package rpg;
+package rpg.personagem;
 
+import rpg.armamento.Armamento;
+import rpg.dado.Dado;
+import rpg.equipamento.Equipamento;
 import rpg.enumeration.EspeciePersonagem;
 
-import java.util.Random;
-
 public class Personagem {
+    private final String nome;
     private final Integer vidaBase;
     private final Integer precisaoBase;
     private final Integer ataqueBase;
@@ -18,9 +20,6 @@ public class Personagem {
     private Armamento armamento;
     private Equipamento equipamento;
 
-    public String nome;
-    public Boolean estaVivo;
-
     public Personagem(String nome, Integer vidaBase, Integer precisaoBase, Integer ataqueBase, Integer defesaBase, EspeciePersonagem especiePersonagem) {
         this.nome = nome;
         this.vidaBase = vidaBase;
@@ -33,64 +32,68 @@ public class Personagem {
         this.precisao = precisaoBase;
         this.ataque = ataqueBase;
         this.defesa = defesaBase;
-        this.estaVivo = true;
     }
 
     public void usarArmamento(Armamento armamento) {
-        System.out.printf("%s pegou \"%s\" para usar como armamento\n", nome, armamento.nome);
+        System.out.printf("%s pegou \"%s\" para usar como armamento\n", nome, armamento.getNome());
         this.armamento = armamento;
         precisao = calcularPrecisao();
         ataque = calcularAtaque();
     }
 
     public void usarEquipamento(Equipamento equipamento) {
-        System.out.printf("%s pegou \"%s\" para usar como equipamento\n", nome, equipamento.nome);
+        System.out.printf("%s pegou \"%s\" para usar como equipamento\n", nome, equipamento.getNome());
         this.equipamento = equipamento;
         defesa = calcularDefesa();
     }
 
-    public void inferirAtaque(Personagem alvo) {
+    public void atacar(Personagem alvo) {
         System.out.printf("%s atacou %s\n", nome, alvo.nome);
-        Random aleatorio = new Random();
-        Integer numeroSorteado = aleatorio.nextInt(precisao) + 1;
+        Dado dadoPrecisao = new Dado(precisao);
+        Integer valorPrecisao = dadoPrecisao.sortear();
 
-        if (numeroSorteado >= alvo.defesa) {
-            System.out.println("O ataque acertou!");
-            Integer valorDano = aleatorio.nextInt(ataque) + 1;
-            alvo.receberAtaque(valorDano);
+        if (valorPrecisao >= alvo.defesa) {
+            System.out.printf("O ataque de %s acertou!\n", nome);
+            Dado dadoDano = new Dado(ataque);
+            Integer valorDano = dadoDano.sortear();
+            alvo.receberDano(valorDano);
         }
         else {
-            System.out.println("O ataque errou!");
+            System.out.printf("O ataque de %s errou!\n", nome);
         }
     }
 
-    public void receberAtaque(Integer valorDano) {
-        System.out.printf("%s perdeu %d pontos de vida\n", nome, valorDano);
-        vida -= valorDano;
-
-        if (vida <= 0) {
-            vida = 0;
-            estaVivo = false;
-        }
-
+    public void receberDano(Integer dano) {
+        System.out.printf("%s perdeu %d pontos de vida\n", nome, dano);
+        vida -= dano;
+        vida = vida < 0 ? 0 : vida;
         System.out.printf("%s possui %d pontos de vida restantes\n", nome, vida);
     }
 
+    public Boolean estaVivo() {
+        return vida > 0;
+    }
+
     private Integer calcularPrecisao() {
-        return precisaoBase + armamento.precisaoBase;
+        return precisaoBase + armamento.getPrecisaoBase();
     }
 
     private Integer calcularAtaque() {
-        return ataqueBase + armamento.ataqueBase;
+        return ataqueBase + armamento.getAtaqueBase();
     }
 
     private Integer calcularDefesa() {
-        return defesaBase + equipamento.defesaBase;
+        return defesaBase + equipamento.getDefesaBase();
+    }
+
+    public String getNome() {
+        return nome;
     }
 
     public String toString() {
         String textoArmamento = armamento == null ? "Vazio" : armamento.toString();
         String textoEquipamento = equipamento == null ? "Vazio" : equipamento.toString();
+
         return String.format("""
                 %s:
                     Vida -> %d
