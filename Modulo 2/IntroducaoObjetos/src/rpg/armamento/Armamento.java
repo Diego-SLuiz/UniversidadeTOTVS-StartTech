@@ -1,18 +1,34 @@
-package rpg;
+package rpg.armamento;
 
 import rpg.enumeration.CategoriaArmamento;
 
 public class Armamento {
-    public final String nome;
-    public final Integer precisaoBase;
-    public final Integer ataqueBase;
-    public final CategoriaArmamento categoriaArmamento;
+    private final String nome;
+    private final Integer precisaoBase;
+    private final Integer ataqueBase;
+    private final CategoriaArmamento categoriaArmamento;
 
     public Armamento(String nome, Integer precisaoBase, Integer ataqueBase, CategoriaArmamento categoriaArmamento) {
         this.nome = nome;
         this.precisaoBase = precisaoBase;
         this.ataqueBase = ataqueBase;
         this.categoriaArmamento = categoriaArmamento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Integer getPrecisaoBase() {
+        return precisaoBase;
+    }
+
+    public Integer getAtaqueBase() {
+        return ataqueBase;
+    }
+
+    public CategoriaArmamento getCategoriaArmamento() {
+        return categoriaArmamento;
     }
 
     public String toString() {
