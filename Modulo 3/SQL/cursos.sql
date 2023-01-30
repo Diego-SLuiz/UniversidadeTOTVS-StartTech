@@ -138,38 +138,95 @@ INSERT INTO curso_comprado(id_aluno, id_curso) VALUES(18, 5)
 INSERT INTO curso_comprado(id_aluno, id_curso) VALUES(19, 5)
 INSERT INTO curso_comprado(id_aluno, id_curso) VALUES(20, 5)
 
--- nome, email e data de nascimento formatada, em ordem alfabética
-SELECT id_aluno, nome, email, CONVERT(VARCHAR, data_nascimento, 103) AS data_nascimento FROM aluno ORDER BY nome ASC;
+-- nome, email e data de nascimento dos alunos, formatada e em ordem alfabética
+SELECT aluno.nome AS nome, 
+	aluno.email AS email,
+	aluno.data_nascimento AS nascimento
+FROM aluno
+ORDER BY aluno.nome ASC;
 
 -- todos os alunos com os digitos 4 5 ou 6 no cpf
-SELECT * FROM aluno WHERE cpf LIKE '%4%' OR cpf LIKE '%5%' OR cpf LIKE '%6%';
+SELECT aluno.nome AS nome,
+	aluno.cpf AS cpf
+FROM aluno 
+WHERE aluno.cpf LIKE '%4%'
+	OR aluno.cpf LIKE '%5%'
+	OR aluno.cpf LIKE '%6%';
 
 -- todos os alunos com email @hotmail.com e que nasceram antes de 2000
-SELECT * FROM aluno WHERE email LIKE '%@hotmail.com' AND DATEPART(yyyy, data_nascimento) < 2000;
+SELECT aluno.nome AS nome,
+	aluno.email AS email,
+	aluno.data_nascimento AS nascimento
+FROM aluno 
+WHERE aluno.email LIKE '%@hotmail.com'
+	AND DATEPART(yyyy, data_nascimento) < 2000;
 
 -- mensalidade mais cara dos cursos
-SELECT MAX(mensalidade) AS mensalidade_maxima FROM curso;
+SELECT MAX(curso.mensalidade) AS mensalidade_maxima 
+FROM curso;
 
 -- média das mensalidades dos cursos
-SELECT AVG(mensalidade) AS media_mensalidade FROM curso;
+SELECT AVG(curso.mensalidade) AS mensalidade_media 
+FROM curso;
 
--- mensalidades com o valor acima da média
-SELECT COUNT(mensalidade) AS mensalidades_acima_da_media FROM curso WHERE mensalidade > (SELECT AVG(mensalidade) FROM curso);
+-- cursos mensalidades com o valor acima da média
+SELECT curso.mensalidade AS valor,
+	COUNT(curso.id_curso) AS cursos
+FROM curso 
+GROUP BY curso.mensalidade
+HAVING curso.mensalidade > (
+	SELECT AVG(curso.mensalidade) 
+	FROM curso
+);
 
--- menor mensalidade com o valor acima da média
-SELECT MIN(mensalidade) AS menor_mensalidade_acima_da_media FROM curso WHERE mensalidade > (SELECT AVG(mensalidade) FROM curso);
+-- curso menor mensalidade com o valor acima da média
+SELECT MIN(curso.mensalidade) AS mensalidade
+FROM curso
+WHERE curso.mensalidade > (
+	SELECT AVG(curso.mensalidade)
+	FROM curso
+);
 
 -- alunos com endereço que possui complemento
-SELECT COUNT(id_aluno) AS enderecos_com_complemento FROM aluno INNER JOIN endereco ON aluno.id_endereco = endereco.id_endereco WHERE endereco.complemento IS NOT NULL;
+SELECT COUNT(endereco.id_endereco) AS complementos
+FROM aluno
+	INNER JOIN endereco ON aluno.id_endereco = endereco.id_endereco
+WHERE endereco.complemento IS NOT NULL;
 
 -- alunos que compraram o curso mais caro
-SELECT COUNT(aluno.id_aluno) AS vendas_do_curso_mais_caro FROM aluno INNER JOIN curso_comprado ON curso_comprado.id_aluno = aluno.id_aluno INNER JOIN curso ON curso_comprado.id_curso = curso.id_curso WHERE curso.mensalidade = (SELECT MAX(mensalidade) FROM curso);
+SELECT COUNT(aluno.id_aluno) AS vendas
+FROM curso_comprado
+	INNER JOIN curso ON curso_comprado.id_curso = curso.id_curso
+	INNER JOIN aluno ON curso_comprado.id_aluno = aluno.id_aluno
+WHERE curso.mensalidade = (
+	SELECT MAX(curso.mensalidade)
+	FROM curso
+);
 
 -- nome, cursos comprados e valor total das mensalidades dos alunos, em ordem alfabética
-SELECT aluno.nome AS nome, COUNT(curso.id_curso) AS cursos_comprados, SUM(curso.mensalidade) AS valor FROM aluno INNER JOIN curso_comprado ON curso_comprado.id_aluno = aluno.id_aluno INNER JOIN curso ON curso_comprado.id_curso = curso.id_curso GROUP BY aluno.nome ORDER BY aluno.nome ASC;
+SELECT aluno.nome AS nome,
+	COUNT(aluno.id_aluno) AS cursos,
+	SUM(curso.mensalidade) AS mensalidades
+FROM curso_comprado
+	INNER JOIN curso ON curso_comprado.id_curso = curso.id_curso
+	INNER JOIN aluno ON curso_comprado.id_aluno = aluno.id_aluno
+GROUP BY aluno.nome
+ORDER BY aluno.nome ASC;
 
 -- nome, quantidade de alunos e mensalidade total de cada curso
-SELECT curso.nome AS nome, COUNT(aluno.id_aluno) AS alunos, SUM(curso.mensalidade) AS mensalidade_total FROM curso INNER JOIN curso_comprado ON curso_comprado.id_curso = curso.id_curso INNER JOIN aluno ON curso_comprado.id_aluno = aluno.id_aluno GROUP BY curso.nome;
+SELECT curso.nome AS curso,
+	COUNT(aluno.id_aluno) AS alunos,
+	SUM(curso.mensalidade) AS mensalidades
+FROM curso_comprado
+	INNER JOIN curso ON curso_comprado.id_curso = curso.id_curso
+	INNER JOIN aluno ON curso_comprado.id_aluno = aluno.id_aluno
+GROUP BY curso.nome;
 
 -- top 3 dos cursos mais vendidos
-SELECT TOP 3 curso.nome AS nome, COUNT(curso.id_curso) AS quantidade_vendas, SUM(curso.mensalidade) AS mensalidade_total FROM curso INNER JOIN curso_comprado ON curso_comprado.id_curso = curso.id_curso GROUP BY curso.nome ORDER BY quantidade_vendas DESC;
+SELECT TOP 3 curso.nome AS curso,
+	COUNT(curso.id_curso) AS vendas
+FROM curso_comprado
+	INNER JOIN curso ON curso_comprado.id_curso = curso.id_curso
+GROUP BY curso.nome
+ORDER BY vendas DESC;
+
