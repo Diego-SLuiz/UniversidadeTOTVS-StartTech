@@ -103,12 +103,33 @@ WHERE funcionario.sexo = 'M' AND funcionario.salario > 3800
 GROUP BY funcionario.id_departamento
 HAVING COUNT(funcionario.id_funcionario) > 1;
 
---
-SELECT COUNT(funcionario.id_funcionario) AS funcionarias,
-	funcionario.id_departamento AS departamento,
-	AVG(funcionario.salario)
+--Crie uma view que traga o nome do departamento, sexo dos funcionarios
+-- e a contagem dos funcionarios
+-- Contudo, apenas os departamentos que tenham a letra 'd' e seus respectivos funcionarios 
+--sejam mulheres que usam gmail e homens que usam hotmail
+--Alem disso, a contagem de funcionario por sexo e por departamento deve ser maior que 1
+
+SELECT departamento.nome AS departamento,
+	COUNT(funcionario.id_funcionario) AS funcionarios,
+	SUM(
+		CASE 
+			WHEN funcionario.sexo = 'M'
+				AND funcionario.email LIKE '%@hotmail.com'
+			THEN 1
+			ELSE 0
+		END
+	) AS homens,
+	SUM(
+		CASE 
+			WHEN funcionario.sexo = 'F'
+				AND funcionario.email LIKE '%@gmail.com'
+			THEN 1 
+			ELSE 0 
+		END
+	) AS mulheres
 FROM funcionario
-WHERE funcionario.email LIKE '%@gmail.com' 
-	AND funcionario.sexo = 'F'
-GROUP BY funcionario.id_departamento
-HAVING AVG(funcionario.salario) > 4000;
+	INNER JOIN departamento ON funcionario.id_departamento = departamento.id_departamento
+WHERE departamento.nome LIKE '%d%'
+	AND (funcionario.sexo = 'M' AND funcionario.email LIKE '%@hotmail.com' OR funcionario.sexo = 'F' AND funcionario.email LIKE '%@gmail.com')
+GROUP BY departamento.nome
+HAVING COUNT(funcionario.id_funcionario) > 1
