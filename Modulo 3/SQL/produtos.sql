@@ -96,7 +96,7 @@ FROM produto
 	LEFT JOIN categoria ON produto.id_categoria = categoria.id_categoria
 GROUP BY categoria.nome;
 
--- 
+-- Soma das televisoes e video games que tem preço maior que 1500
 SELECT SUM(produto.preco) AS valor_soma, 
 	categoria.nome AS categoria
 FROM produto 
@@ -107,4 +107,10 @@ WHERE (categoria.id_categoria = 3
 GROUP BY categoria.nome;
 
 -- Mouse mais caro
-SELECT * FROM produto
+SELECT TOP 1 categoria.nome AS categoria,
+	produto.descricao AS produto,
+	produto.preco AS preco
+FROM produto
+	INNER JOIN categoria ON produto.id_categoria = categoria.id_categoria
+WHERE produto.descricao LIKE '%Mouse%'
+ORDER BY produto.preco DESC;
