@@ -109,27 +109,31 @@ HAVING COUNT(funcionario.id_funcionario) > 1;
 --sejam mulheres que usam gmail e homens que usam hotmail
 --Alem disso, a contagem de funcionario por sexo e por departamento deve ser maior que 1
 
-SELECT departamento.nome AS departamento,
-	COUNT(funcionario.id_funcionario) AS funcionarios,
-	SUM(
-		CASE 
-			WHEN funcionario.sexo = 'M'
-				AND funcionario.email LIKE '%@hotmail.com'
-			THEN 1
-			ELSE 0
-		END
-	) AS homens,
-	SUM(
-		CASE 
-			WHEN funcionario.sexo = 'F'
-				AND funcionario.email LIKE '%@gmail.com'
-			THEN 1 
-			ELSE 0 
-		END
-	) AS mulheres
-FROM funcionario
-	INNER JOIN departamento ON funcionario.id_departamento = departamento.id_departamento
-WHERE departamento.nome LIKE '%d%'
-	AND (funcionario.sexo = 'M' AND funcionario.email LIKE '%@hotmail.com' OR funcionario.sexo = 'F' AND funcionario.email LIKE '%@gmail.com')
-GROUP BY departamento.nome
-HAVING COUNT(funcionario.id_funcionario) > 1
+CREATE VIEW view_sexo_departamento AS (
+	SELECT departamento.nome AS departamento,
+		COUNT(funcionario.id_funcionario) AS funcionarios,
+		SUM(
+			CASE 
+				WHEN funcionario.sexo = 'M'
+					AND funcionario.email LIKE '%@hotmail.com'
+				THEN 1
+				ELSE 0
+			END
+		) AS homens,
+		SUM(
+			CASE 
+				WHEN funcionario.sexo = 'F'
+					AND funcionario.email LIKE '%@gmail.com'
+				THEN 1 
+				ELSE 0 
+			END
+		) AS mulheres
+	FROM funcionario
+		INNER JOIN departamento ON funcionario.id_departamento = departamento.id_departamento
+	WHERE departamento.nome LIKE '%d%'
+		AND (funcionario.sexo = 'M' AND funcionario.email LIKE '%@hotmail.com' OR funcionario.sexo = 'F' AND funcionario.email LIKE '%@gmail.com')
+	GROUP BY departamento.nome
+	HAVING COUNT(funcionario.id_funcionario) > 1
+);
+
+SELECT * FROM view_sexo_departamento;
