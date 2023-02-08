@@ -111,28 +111,13 @@ HAVING COUNT(funcionario.id_funcionario) > 1;
 
 CREATE VIEW view_sexo_departamento AS (
 	SELECT departamento.nome AS departamento,
-		COUNT(funcionario.id_funcionario) AS funcionarios,
-		SUM(
-			CASE 
-				WHEN funcionario.sexo = 'M'
-					AND funcionario.email LIKE '%@hotmail.com'
-				THEN 1
-				ELSE 0
-			END
-		) AS homens,
-		SUM(
-			CASE 
-				WHEN funcionario.sexo = 'F'
-					AND funcionario.email LIKE '%@gmail.com'
-				THEN 1 
-				ELSE 0 
-			END
-		) AS mulheres
+	funcionario.sexo AS sexo,
+	COUNT(funcionario.id_funcionario) AS funcionarios
 	FROM funcionario
 		INNER JOIN departamento ON funcionario.id_departamento = departamento.id_departamento
 	WHERE departamento.nome LIKE '%d%'
 		AND (funcionario.sexo = 'M' AND funcionario.email LIKE '%@hotmail.com' OR funcionario.sexo = 'F' AND funcionario.email LIKE '%@gmail.com')
-	GROUP BY departamento.nome
+	GROUP BY departamento.nome, funcionario.sexo
 	HAVING COUNT(funcionario.id_funcionario) > 1
 );
 
